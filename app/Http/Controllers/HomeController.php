@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Comment;
 use App\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use phpDocumentor\Reflection\Types\Integer;
 
 
 class HomeController extends Controller
@@ -41,6 +43,18 @@ class HomeController extends Controller
 
         Comment::add_record($request->news_id, $request->body);
         return redirect('/news/' . $request->news_id);
+    }
+
+    public function downloadpost($id)
+    {
+        $record = News::find($id);
+        $pdf = App::make('dompdf.wrapper');
+        return
+            $pdf->
+            loadHTML($record->get_body())->
+            setPaper('a4')->
+            setWarnings(false)->
+            download( preg_replace('/\\s+/', '_', $record->title).'.pdf');
     }
 
     public function post()

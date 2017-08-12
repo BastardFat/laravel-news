@@ -13,6 +13,7 @@
 
 use App\Mail\AccountConfirmationMail;
 use App\User;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Mail;
 
 Route::get('/', function () {
@@ -27,6 +28,7 @@ Route::get('/unconfirmed', function () {
 Route::get('/news', 'HomeController@news');
 
 Route::get('/news/{id}', 'HomeController@newsbyid');
+Route::get('/downloadpost/{id}', 'HomeController@downloadpost');
 
 Route::get('/post', 'HomeController@post');
 Route::post('/save', 'HomeController@save');
@@ -52,7 +54,8 @@ Route::get('/confirmaccount/{token}', function ($token)
 
 Route::get('/test', function()
 {
-   dd(url('/news'));
+    $pdf = App::make('dompdf.wrapper');
+    return $pdf->loadHTML('<b>Bold</b><br>Shit!')->setPaper('a4')->setWarnings(false)->download('test.pdf');
 });
 
 Route::feeds();

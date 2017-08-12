@@ -6,22 +6,22 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Feed\FeedItem;
+use GrahamCampbell\Markdown\Facades\Markdown;
+
 
 class News extends Model implements FeedItem
 {
     public function short_body()
     {
-        if(strlen($this->body) <= 96)
-            return $this->body;
-        return substr($this->body, 0,96) . ' ...';
+        $temp = substr(strip_tags(Markdown::convertToHtml($this->body)),0,96);
+        $temp = strlen($temp) < 95 ? $temp : $temp." ...";
+        return $temp;
     }
 
     public function posted_user()
     {
         $user = User::find($this->user_id);
-        if(!isset($user))
-            return "John Doe";
-        return $user->name;
+        return isset($user)?$user->name:"Anonimous";
     }
 
     public static function add_record($title, $body)
@@ -32,6 +32,11 @@ class News extends Model implements FeedItem
         $record->user_id = Auth::user()->id;
         $record->save();
         return $record;
+    }
+
+    public function get_body()
+    {
+        return Markdown::convertToHtml($this->body);
     }
 
     public function getFeedItemId()

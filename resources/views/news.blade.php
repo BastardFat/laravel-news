@@ -7,19 +7,16 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <small>{{$record->created_at}}</small>
-                        <h3 style="margin: 0;">{{$record->title}}<small> by {{$record->posted_user()}}</small></h3>
+                        <hr/>
+                        <h2 style="margin: 0;">{{$record->title}}<small> by {{$record->posted_user()}}</small></h2>
                     </div>
                     <div class="panel-body">
-
                         {{$record->short_body()}}
                         <hr>
                         <div>
                             <a class="btn btn-default btn-sm" href="/news/{{$record->id}}">Read more...</a>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
