@@ -1,0 +1,1 @@
+link here: <a href="{{ $confirmation_link }}">{{ $confirmation_link }}</a>
