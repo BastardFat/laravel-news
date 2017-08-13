@@ -25,7 +25,7 @@ class HomeController extends Controller
 
     public function news()
     {
-        $records = News::all();
+        $records = News::orderByDesc('updated_at')->get();
         return view('news', compact('records'));
     }
     public function newsbyid($id)
